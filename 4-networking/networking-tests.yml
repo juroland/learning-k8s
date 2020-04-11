@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  containers:
+  - name: mysql
+    image: mysql:5
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      value: password # see secret later
+    - name: MYSQL_DATABASE
+      value: fleetman
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database # accessible via this name in the cluster (check with nslookup)
+spec:
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+  type: ClusterIP # this service is only accessible inside k8s cluster

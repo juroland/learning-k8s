@@ -1,0 +1,28 @@
+# what
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+spec:
+  storageClassName: a-local-storage
+  accessModes:
+    - ReadWriteOnce # mount rw by a single node
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+# how
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage
+spec:
+  storageClassName: a-local-storage
+  accessModes:
+    - ReadWriteOnce # mount rw by a single node
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: /mnt/mongodb2
+    type: DirectoryOrCreate
